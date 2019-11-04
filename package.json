@@ -1,6 +1,6 @@
 {
   "name": "gendiff",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "scripts": {
     "build": "cross-env NODE_ENV=production babel src --out-dir dist --source-maps inline",
@@ -12,9 +12,10 @@
   "files": [
     "dist"
   ],
-  "main": "index.js",
+  "main": "dist/bin/gendiff.js",
   "dependencies": {
-    "commander": "^4.0.0"
+    "commander": "^4.0.0",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
