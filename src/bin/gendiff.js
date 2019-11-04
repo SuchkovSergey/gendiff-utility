@@ -7,9 +7,9 @@ const program = require('commander');
 
 const parser = (pathToFile) => JSON.parse(fs.readFileSync(pathToFile));
 
-const genDiff = (pathToFileOne, pathToFileTwo) => {
-  const fileOneParsed = parser(pathToFileOne); // это объект
-  const fileTwoParsed = parser(pathToFileTwo);
+const genDiff = (pathOne, pathTwo) => {
+  const fileOneParsed = parser(pathOne); // это объект
+  const fileTwoParsed = parser(pathTwo);
   const keysOne = Object.keys(fileOneParsed);
   const keysTwo = Object.keys(fileTwoParsed);
 
@@ -27,17 +27,17 @@ const genDiff = (pathToFileOne, pathToFileTwo) => {
 
   const firstStep = keysOne.reduce(reducerFirst, '{\n');
 
-  const reducerSecond = (acc, value) => ((!lodash.has(fileOneParsed, value))
+  const reducerSecond = (acc, value) => (!lodash.has(fileOneParsed, value)
     ? `${acc} + ${value}: ${fileTwoParsed[value]}\n`
     : acc);
 
-  return console.log(`${keysTwo.reduce(reducerSecond, firstStep)}}`);
+  return `${keysTwo.reduce(reducerSecond, firstStep)}}`;
 };
 
 program
-  .version('0.0.3')
+  .version('0.1.1')
   .arguments('<firstConfig> <secondConfig>')
-  .action((first, second) => genDiff(first, second));
+  .action((first, second) => console.log(genDiff(first, second)));
 
 program
   .description('Compares two configuration files and shows a difference.')

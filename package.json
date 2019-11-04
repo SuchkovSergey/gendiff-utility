@@ -1,6 +1,6 @@
 {
   "name": "gendiff",
-  "version": "0.0.3",
+  "version": "0.1.1",
   "description": "",
   "scripts": {
     "build": "cross-env NODE_ENV=production babel src --out-dir dist --source-maps inline",
