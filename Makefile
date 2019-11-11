@@ -1,5 +1,3 @@
-install:
-	npm install
 publish:
 	npm publish --dry-run
 push:
@@ -12,3 +10,5 @@ fix:
 	sudo npx eslint --fix .
 start:
 	npx babel-node src/bin/gendiff.js
+test:
+	npm test
