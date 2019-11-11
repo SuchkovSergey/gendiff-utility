@@ -12,3 +12,5 @@ start:
 	npx babel-node src/bin/gendiff.js
 test:
 	npm test
+jest:
+	npx jest --watchAll

@@ -11,22 +11,22 @@ const genDiff = (pathOne, pathTwo) => {
   const keysTwo = Object.keys(fileTwoParsed);
 
   const reducerFirst = (acc, value) => {
-    const strOne = `${value}: ${fileOneParsed[value]}`;
-    const strTwo = `${value}: ${fileTwoParsed[value]}`;
+    const strOne = `${value}: ${fileOneParsed[value]}\r\n`;
+    const strTwo = `${value}: ${fileTwoParsed[value]}\r\n`;
     if (_.has(fileTwoParsed, value)) {
       if (fileOneParsed[value] === fileTwoParsed[value]) {
-        return `${acc}   ${strOne}\n`;
+        return `${acc}   ${strOne}`;
       }
-      return `${acc} - ${strOne}\n + ${strTwo}\n`;
+      return `${acc} - ${strOne} + ${strTwo}`;
     }
-    return `${acc} - ${strOne}\n`;
+    return `${acc} - ${strOne}`;
   };
 
   const reducerSecond = (acc, value) => (!_.has(fileOneParsed, value)
-    ? `${acc} + ${value}: ${fileTwoParsed[value]}\n`
+    ? `${acc} + ${value}: ${fileTwoParsed[value]}\r\n`
     : acc);
 
-  const firstStep = keysOne.reduce(reducerFirst, '{\n');
+  const firstStep = keysOne.reduce(reducerFirst, '{\r\n');
 
   return `${keysTwo.reduce(reducerSecond, firstStep)}}`;
 };
