@@ -10,4 +10,4 @@ for JSON:
 <a href="https://asciinema.org/a/t1LWJNvWP5LUIYnEi2RX0T28O"><img src="https://asciinema.org/a/t1LWJNvWP5LUIYnEi2RX0T28O.png" width="250"/></a>
 
 for YML:
-<a href="https://asciinema.org/a/KhmgnMhv09v38pI1MESb6Lbeo"><img src="https://asciinema.org/a/KhmgnMhv09v38pI1MESb6Lbeo" width="250"/></a>
+<a href="https://asciinema.org/a/KhmgnMhv09v38pI1MESb6Lbeo"><img src="https://asciinema.org/a/KhmgnMhv09v38pI1MESb6Lbeo.png" width="250"/></a>
