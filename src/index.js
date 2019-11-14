@@ -1,11 +1,8 @@
 import * as _ from 'lodash';
-
-const fs = require('fs');
-
-const parser = (pathToFile) => JSON.parse(fs.readFileSync(pathToFile));
+import parser from './parsers';
 
 const genDiff = (pathOne, pathTwo) => {
-  const fileOneParsed = parser(pathOne); // это объект
+  const fileOneParsed = parser(pathOne);
   const fileTwoParsed = parser(pathTwo);
   const keysOne = Object.keys(fileOneParsed);
   const keysTwo = Object.keys(fileTwoParsed);
