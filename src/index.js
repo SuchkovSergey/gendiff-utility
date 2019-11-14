@@ -29,3 +29,7 @@ const genDiff = (pathOne, pathTwo) => {
 };
 
 export default genDiff;
+
+
+// `${__dirname}/__fixtures__/before.yml`
+// const fileOneParsed = parser(`/${__dirname}/${pathOne}`);

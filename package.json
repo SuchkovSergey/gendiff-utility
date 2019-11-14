@@ -1,6 +1,6 @@
 {
   "name": "gendiff",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "scripts": {
     "test": "jest",
@@ -16,6 +16,7 @@
   "main": "dist/bin/gendiff.js",
   "dependencies": {
     "commander": "^4.0.0",
+    "ini": "^1.3.5",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15"
   },
