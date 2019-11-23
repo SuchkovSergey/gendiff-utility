@@ -15,7 +15,7 @@ const parser = (pathToFile) => {
   const extname = path.extname(pathToFile);
   // console.log(extname);
   const parseFunc = parsers[extname];
-  return parseFunc ? parseFunc(fs.readFileSync(pathToFile)) : null;
+  return parsers.hasOwnProperty(extname) ? parseFunc(fs.readFileSync(pathToFile, 'utf-8')) : null;
 };
 
 export default parser;
