@@ -1,29 +1,8 @@
 // import * as _ from 'lodash';
 import parser from './parsers';
+import branchRender from './formatters/branch';
+import plainRender from './formatters/plain';
 
-/*
-const stringify = (str) => {
-  const arrayOfSymbols = str.split('');
-  const newArr = [];
-  for (const symbol of arrayOfSymbols) {
-    if (symbol !== '"') {
-      newArr.push(symbol);
-    }
-  }
-  return newArr.join('');
-};
-*/
-
-const objStringify = (object, indent = '') => {
-  const newIndent = `${indent}  `;
-  const keys = Object.keys(object);
-  const reducer = (acc, key) => {
-    const strOne = `${newIndent}  ${key}: ${object[key]}\r\n`;
-    return `${acc}  ${strOne}`;
-  };
-  const str = keys.reduce(reducer, '{\r\n');
-  return `${str}${newIndent}}`;
-};
 
 const parse = (fileOneParsed, fileTwoParsed) => {
   const keysOne = Object.keys(fileOneParsed); // возможно, переписать на
@@ -38,15 +17,7 @@ const parse = (fileOneParsed, fileTwoParsed) => {
     const children = isBeforeObj && isAfterObj ? parse(valueBefore, valueAfter) : [];
 
     let currentState = '';
-    /*
-    const currentStateVariations = {
-      'deleted' : () => !keysTwo.includes(value),
-      'changedInside': () => isBeforeObj && isAfterObj,
-      'changedObj': () => isBeforeObj || isAfterObj,
-      'unchanged': () => valueBefore === valueAfter,
-      'changed': () => valueBefore !== valueAfter ,
-    }
-*/
+
     switch (true) {
       case !keysTwo.includes(value):
         currentState = 'deleted';
@@ -93,54 +64,18 @@ const parse = (fileOneParsed, fileTwoParsed) => {
   return keysTwo.reduce(reducerSecond, firstStep);
 };
 
-const render = (ast, indent = '', indent1 = '') => {
-  const newIndent = `${indent}  `;
-  const reducerFirst = (acc, value) => {
-    let strOne = '';
-    let strTwo = '';
-    const before = value.valueBefore instanceof Object
-      ? objStringify(value.valueBefore, newIndent) : value.valueBefore;
-    const after = value.valueAfter instanceof Object
-      ? objStringify(value.valueAfter, newIndent) : value.valueAfter;
-    const state = value.currentState;
-
-    const strPlusAfter = `${newIndent}+ ${value.name}: ${after}\r\n`;
-    const strMinusBefore = `${newIndent}- ${value.name}: ${before}\r\n`;
-    const strUnchanged = `${newIndent}  ${value.name}: ${before}\r\n`;
-
-    if (state === 'deleted') {
-      strOne = strMinusBefore;
-    }
-    if (state === 'changedInside') {
-      const indent2 = `${newIndent}  `;
-      strOne = `${newIndent}  ${value.name}: ${render(value.children, indent2, indent2)}\r\n`;
-    }
-    if (state === 'changedObj' || state === 'changed') {
-      strOne = strMinusBefore;
-      strTwo = strPlusAfter;
-    }
-    if (state === 'unchanged') {
-      strOne = strUnchanged;
-    }
-    if (state === 'added') {
-      strTwo = strPlusAfter;
-    }
-
-    return `${acc}${strOne}${strTwo}`;
-  };
-  const renderedAST = `${ast.reduce(reducerFirst, '{\r\n')}${indent1}}`;
-
-  return renderedAST;
+const renderers = {
+  branch: branchRender,
+  plain: plainRender,
 };
 
-const genDiff = (pathOne, pathTwo) => {
+const genDiff = (pathOne, pathTwo, format = 'branch') => {
   const fileOneParsed = parser(pathOne);
   const fileTwoParsed = parser(pathTwo);
   const ast = parse(fileOneParsed, fileTwoParsed);
-  const answer = render(ast);
-  return answer;
+  const renderer = renderers[format];
+  return renderers.hasOwnProperty(format) ? renderer(ast) : null;
 };
-
 
 export default genDiff;
 

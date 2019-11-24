@@ -8,7 +8,7 @@
     }
   },
   group1: {
-    baz: bas,
+    baz: bar,
     foo: bar,
     nest: {
       key: value
