@@ -1,6 +1,5 @@
 const render = (ast, currentName = '') => {
   const reducer = (acc, value) => {
-    let strOne = '';
     let strTwo = '';
     const name = (currentName === '') ? `${value.name}` : `${currentName}.${value.name}`;
     let before;
@@ -29,27 +28,21 @@ const render = (ast, currentName = '') => {
     }
 
     const state = value.currentState;
-    const strUpdated = `Property '${name}' was updated. From ${before} to ${after}\r\n`;
-    const strAdded = `Property '${name}' was added with value: ${after}\r\n`;
-    const strRemoved = `Property '${name}' was removed\r\n`;
-    const strUnchanged = `Property '${name}' wasn't changed\r\n`;
+    const firstPart = `Property '${name}' was`;
+    const strUpdated = `${firstPart} updated. From ${before} to ${after}\r\n`;
 
-    if (state === 'deleted') {
-      strOne = strRemoved;
-    }
-    if (state === 'changedInside') {
-      strOne = `${strUpdated}${render(value.children, name)}`;
-    }
-    if (state === 'changedObj' || state === 'changed') {
-      strOne = strUpdated;
-    }
-    if (state === 'unchanged') {
-      strOne = strUnchanged;
-    }
-    if (state === 'added') {
-      strTwo = strAdded;
-    }
+    const strOneNew = {
+      deleted: `${firstPart} removed\r\n`,
+      changedInside: `${strUpdated}${render(value.children, name)}`,
+      changedObj: strUpdated,
+      changed: strUpdated,
+      unchanged: `${firstPart}n't changed\r\n`,
+      added: '',
+    };
 
+    strTwo = state === 'added' ? `${firstPart} added with value: ${after}\r\n` : '';
+
+    const strOne = strOneNew[state];
     return `${acc}${strOne}${strTwo}`;
   };
   const renderedAST = `${ast.reduce(reducer, '')}`;
@@ -57,3 +50,22 @@ const render = (ast, currentName = '') => {
 };
 
 export default render;
+
+
+/*
+if (state === 'deleted') {
+  strOne = `${firstPart} removed\r\n`;
+}
+if (state === 'changedInside') {
+  strOne = `${strUpdated}${render(value.children, name)}`;
+}
+if (state === 'changedObj' || state === 'changed') {
+  strOne = strUpdated;
+}
+if (state === 'unchanged') {
+  strOne = `${firstPart}n't changed\r\n`;
+}
+if (state === 'added') {
+  strTwo = `${firstPart} added with value: ${after}\r\n`;
+}
+*/

@@ -1,12 +1,11 @@
-// import * as _ from 'lodash';
 import parser from './parsers';
 import branchRender from './formatters/branch';
 import plainRender from './formatters/plain';
-
+import jsonRender from './formatters/json';
 
 const parse = (fileOneParsed, fileTwoParsed) => {
-  const keysOne = Object.keys(fileOneParsed); // возможно, переписать на
-  const keysTwo = Object.keys(fileTwoParsed); // obj.hasOwnProperty('propertyName')
+  const keysOne = Object.keys(fileOneParsed);
+  const keysTwo = Object.keys(fileTwoParsed);
   const result = [];
 
   const reducerFirst = (acc, value) => {
@@ -64,20 +63,18 @@ const parse = (fileOneParsed, fileTwoParsed) => {
   return keysTwo.reduce(reducerSecond, firstStep);
 };
 
-const renderers = {
+const formatters = {
   branch: branchRender,
   plain: plainRender,
+  json: jsonRender,
 };
 
 const genDiff = (pathOne, pathTwo, format = 'branch') => {
   const fileOneParsed = parser(pathOne);
   const fileTwoParsed = parser(pathTwo);
   const ast = parse(fileOneParsed, fileTwoParsed);
-  const renderer = renderers[format];
-  return renderers.hasOwnProperty(format) ? renderer(ast) : null;
+  const formatter = formatters[format];
+  return formatter ? formatter(ast) : null;
 };
 
 export default genDiff;
-
-// `${__dirname}/__fixtures__/before.yml`
-// const fileOneParsed = parser(`/${__dirname}/${pathOne}`);

@@ -1,10 +1,8 @@
-import objStringify from '../utils';
+import { objStringify } from '../utils';
 
 const render = (ast, indent = '', indent1 = '') => {
   const newIndent = `${indent}  `;
-  const reducerFirst = (acc, value) => {
-    let strOne = '';
-    let strTwo = '';
+  const reducer = (acc, value) => {
     const before = value.valueBefore instanceof Object
       ? objStringify(value.valueBefore, newIndent) : value.valueBefore;
     const after = value.valueAfter instanceof Object
@@ -13,29 +11,50 @@ const render = (ast, indent = '', indent1 = '') => {
     const strPlusAfter = `${newIndent}+ ${value.name}: ${after}\r\n`;
     const strMinusBefore = `${newIndent}- ${value.name}: ${before}\r\n`;
     const strUnchanged = `${newIndent}  ${value.name}: ${before}\r\n`;
+    const ind2 = `${newIndent}  `;
 
-    if (state === 'deleted') {
-      strOne = strMinusBefore;
-    }
-    if (state === 'changedInside') {
-      const indent2 = `${newIndent}  `;
-      strOne = `${newIndent}  ${value.name}: ${render(value.children, indent2, indent2)}\r\n`;
-    }
-    if (state === 'changedObj' || state === 'changed') {
-      strOne = strMinusBefore;
-      strTwo = strPlusAfter;
-    }
-    if (state === 'unchanged') {
-      strOne = strUnchanged;
-    }
-    if (state === 'added') {
-      strTwo = strPlusAfter;
-    }
-
+    const strOneNew = {
+      deleted: strMinusBefore,
+      changedInside: `${newIndent}  ${value.name}: ${render(value.children, ind2, ind2)}\r\n`,
+      changedObj: strMinusBefore,
+      changed: strMinusBefore,
+      unchanged: strUnchanged,
+      added: '',
+    };
+    const strTwoNew = {
+      deleted: '',
+      changedInside: '',
+      changedObj: strPlusAfter,
+      changed: strPlusAfter,
+      unchanged: '',
+      added: strPlusAfter,
+    };
+    const strOne = strOneNew[state];
+    const strTwo = strTwoNew[state];
     return `${acc}${strOne}${strTwo}`;
   };
-  const renderedAST = `${ast.reduce(reducerFirst, '{\r\n')}${indent1}}`;
+  const renderedAST = `${ast.reduce(reducer, '{\r\n')}${indent1}}`;
   return renderedAST;
 };
 
 export default render;
+
+/*
+if (state === 'deleted') {
+  strOne = strMinusBefore;
+}
+if (state === 'changedInside') {
+  const indent2 = `${newIndent}  `;
+  strOne = `${newIndent}  ${value.name}: ${render(value.children, indent2, indent2)}\r\n`;
+}
+if (state === 'changedObj' || state === 'changed') {
+  strOne = strMinusBefore;
+  strTwo = strPlusAfter;
+}
+if (state === 'unchanged') {
+  strOne = strUnchanged;
+}
+if (state === 'added') {
+  strTwo = strPlusAfter;
+}
+*/

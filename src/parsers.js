@@ -1,5 +1,4 @@
 import yaml from 'js-yaml';
-// import ini from 'ini';
 
 const fs = require('fs');
 const path = require('path');
@@ -13,9 +12,8 @@ const parsers = {
 
 const parser = (pathToFile) => {
   const extname = path.extname(pathToFile);
-  // console.log(extname);
   const parseFunc = parsers[extname];
-  return parsers.hasOwnProperty(extname) ? parseFunc(fs.readFileSync(pathToFile, 'utf-8')) : null;
+  return parseFunc ? parseFunc(fs.readFileSync(pathToFile, 'utf-8')) : null;
 };
 
 export default parser;

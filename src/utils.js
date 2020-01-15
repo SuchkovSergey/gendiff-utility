@@ -11,7 +11,7 @@ const stringify = (str) => {
 };
 */
 
-const stringify = (object, indent = '') => {
+const objStringify = (object, indent = '') => {
   const newIndent = `${indent}  `;
   const keys = Object.keys(object);
   const reducer = (acc, key) => {
@@ -22,4 +22,12 @@ const stringify = (object, indent = '') => {
   return `${str}${newIndent}}`;
 };
 
-export default stringify;
+const finalPathBuilder = (path) => {
+  const firstSymbol = path[0];
+  return firstSymbol === '/' ? path : `${__filename}/${path}`;
+};
+
+export { objStringify, finalPathBuilder };
+
+
+// `${__dirname}/__fixtures__/before.json`
