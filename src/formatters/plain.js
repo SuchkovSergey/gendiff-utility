@@ -1,71 +1,48 @@
 const render = (ast, currentName = '') => {
-  const reducer = (acc, value) => {
-    let strTwo = '';
-    const name = (currentName === '') ? `${value.name}` : `${currentName}.${value.name}`;
+  const reducer = (acc, node) => {
+    const name = (currentName === '') ? `${node.name}` : `${currentName}.${node.name}`;
     let before;
     let after;
 
     switch (true) {
-      case value.valueBefore instanceof Object:
+      case node.valueBefore instanceof Object:
         before = '[complex value]';
         break;
-      case typeof value.valueBefore === 'string':
-        before = `'${value.valueBefore}'`;
+      case typeof node.valueBefore === 'string':
+        before = `'${node.valueBefore}'`;
         break;
       default:
-        before = value.valueBefore;
+        before = node.valueBefore;
     }
 
     switch (true) {
-      case value.valueAfter instanceof Object:
+      case node.valueAfter instanceof Object:
         after = '[complex value]';
         break;
-      case typeof value.valueAfter === 'string':
-        after = `'${value.valueAfter}'`;
+      case typeof node.valueAfter === 'string':
+        after = `'${node.valueAfter}'`;
         break;
       default:
-        after = value.valueAfter;
+        after = node.valueAfter;
     }
 
-    const state = value.currentState;
+    const state = node.currentState;
     const firstPart = `Property '${name}' was`;
     const strUpdated = `${firstPart} updated. From ${before} to ${after}\r\n`;
 
-    const strOneNew = {
+    const newString = {
       deleted: `${firstPart} removed\r\n`,
-      changedInside: `${strUpdated}${render(value.children, name)}`,
+      changedInside: `${strUpdated}${render(node.children, name)}`,
       changedObj: strUpdated,
       changed: strUpdated,
       unchanged: `${firstPart}n't changed\r\n`,
-      added: '',
+      added: `${firstPart} added with value: ${after}\r\n`,
     };
 
-    strTwo = state === 'added' ? `${firstPart} added with value: ${after}\r\n` : '';
-
-    const strOne = strOneNew[state];
-    return `${acc}${strOne}${strTwo}`;
+    return `${acc}${newString[state]}`;
   };
   const renderedAST = `${ast.reduce(reducer, '')}`;
   return renderedAST;
 };
 
 export default render;
-
-
-/*
-if (state === 'deleted') {
-  strOne = `${firstPart} removed\r\n`;
-}
-if (state === 'changedInside') {
-  strOne = `${strUpdated}${render(value.children, name)}`;
-}
-if (state === 'changedObj' || state === 'changed') {
-  strOne = strUpdated;
-}
-if (state === 'unchanged') {
-  strOne = `${firstPart}n't changed\r\n`;
-}
-if (state === 'added') {
-  strTwo = `${firstPart} added with value: ${after}\r\n`;
-}
-*/

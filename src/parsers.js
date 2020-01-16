@@ -17,8 +17,3 @@ const parser = (pathToFile) => {
 };
 
 export default parser;
-
-/*
-const pathToConfigs = path.join(__dirname, '__tests__/__fixtures__');
-const currentPath = `${pathToConfigs}/${pathToFile}`;
-*/

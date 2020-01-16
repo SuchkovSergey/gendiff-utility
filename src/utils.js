@@ -1,16 +1,3 @@
-/*
-const stringify = (str) => {
-  const arrayOfSymbols = str.split('');
-  const newArr = [];
-  for (const symbol of arrayOfSymbols) {
-    if (symbol !== '"') {
-      newArr.push(symbol);
-    }
-  }
-  return newArr.join('');
-};
-*/
-
 const objStringify = (object, indent = '') => {
   const newIndent = `${indent}  `;
   const keys = Object.keys(object);
@@ -22,12 +9,4 @@ const objStringify = (object, indent = '') => {
   return `${str}${newIndent}}`;
 };
 
-const finalPathBuilder = (path) => {
-  const firstSymbol = path[0];
-  return firstSymbol === '/' ? path : `${__filename}/${path}`;
-};
-
-export { objStringify, finalPathBuilder };
-
-
-// `${__dirname}/__fixtures__/before.json`
+export default objStringify;

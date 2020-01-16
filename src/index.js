@@ -3,14 +3,14 @@ import branchRender from './formatters/branch';
 import plainRender from './formatters/plain';
 import jsonRender from './formatters/json';
 
-const parse = (fileOneParsed, fileTwoParsed) => {
-  const keysOne = Object.keys(fileOneParsed);
-  const keysTwo = Object.keys(fileTwoParsed);
+const parse = (firstFile, secondFile) => {
+  const keysOne = Object.keys(firstFile);
+  const keysTwo = Object.keys(secondFile);
   const result = [];
 
-  const reducerFirst = (acc, value) => {
-    const valueBefore = fileOneParsed[value] || '';
-    const valueAfter = fileTwoParsed[value] || '';
+  const reducerFirst = (acc, key) => {
+    const valueBefore = firstFile[key] || '';
+    const valueAfter = secondFile[key] || '';
     const isBeforeObj = valueBefore instanceof Object;
     const isAfterObj = valueAfter instanceof Object;
     const children = isBeforeObj && isAfterObj ? parse(valueBefore, valueAfter) : [];
@@ -18,7 +18,7 @@ const parse = (fileOneParsed, fileTwoParsed) => {
     let currentState = '';
 
     switch (true) {
-      case !keysTwo.includes(value):
+      case !keysTwo.includes(key):
         currentState = 'deleted';
         break;
       case isBeforeObj && isAfterObj:
@@ -35,7 +35,7 @@ const parse = (fileOneParsed, fileTwoParsed) => {
     }
 
     const root = {
-      name: value,
+      name: key,
       currentState,
       valueBefore,
       valueAfter,
@@ -46,15 +46,15 @@ const parse = (fileOneParsed, fileTwoParsed) => {
 
   const firstStep = keysOne.reduce(reducerFirst, result);
 
-  const reducerSecond = (acc, value) => {
+  const reducerSecond = (acc, key) => {
     const root = {
-      name: value,
+      name: key,
       currentState: 'added',
       valueBefore: '',
-      valueAfter: fileTwoParsed[value],
+      valueAfter: secondFile[key],
       children: [],
     };
-    if (!keysOne.includes(value)) {
+    if (!keysOne.includes(key)) {
       return [...acc, { ...root }];
     }
     return acc;
@@ -70,9 +70,9 @@ const formatters = {
 };
 
 const genDiff = (pathOne, pathTwo, format = 'branch') => {
-  const fileOneParsed = parser(pathOne);
-  const fileTwoParsed = parser(pathTwo);
-  const ast = parse(fileOneParsed, fileTwoParsed);
+  const firstFile = parser(pathOne);
+  const secondFile = parser(pathTwo);
+  const ast = parse(firstFile, secondFile);
   const formatter = formatters[format];
   return formatter ? formatter(ast) : null;
 };

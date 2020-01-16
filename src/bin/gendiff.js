@@ -4,7 +4,7 @@ import genDiff from '..';
 const program = require('commander');
 
 program
-  .version('0.1.9')
+  .version('0.1.10')
   .arguments('<firstConfig> <secondConfig> [format]')
   .action((first, second, format) => console.log(genDiff(first, second, format)));
 
