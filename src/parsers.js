@@ -10,10 +10,10 @@ const parsers = {
   '.ini': ini.parse,
 };
 
-const parser = (pathToFile) => {
+const parse = (pathToFile) => {
   const extname = path.extname(pathToFile);
   const parseFunc = parsers[extname];
   return parseFunc ? parseFunc(fs.readFileSync(pathToFile, 'utf-8')) : null;
 };
 
-export default parser;
+export default parse;

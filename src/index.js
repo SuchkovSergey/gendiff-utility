@@ -1,4 +1,4 @@
-import parser from './parsers';
+import pathParse from './parsers';
 import branchRender from './formatters/branch';
 import plainRender from './formatters/plain';
 import jsonRender from './formatters/json';
@@ -70,8 +70,8 @@ const formatters = {
 };
 
 const genDiff = (pathOne, pathTwo, format = 'branch') => {
-  const firstFile = parser(pathOne);
-  const secondFile = parser(pathTwo);
+  const firstFile = pathParse(pathOne);
+  const secondFile = pathParse(pathTwo);
   const ast = parse(firstFile, secondFile);
   const formatter = formatters[format];
   return formatter ? formatter(ast) : null;
