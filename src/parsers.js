@@ -1,8 +1,7 @@
 import yaml from 'js-yaml';
-
-const fs = require('fs');
-const path = require('path');
-const ini = require('ini');
+import fs from 'fs';
+import path from 'path';
+import ini from 'ini';
 
 const parsers = {
   '.json': JSON.parse,

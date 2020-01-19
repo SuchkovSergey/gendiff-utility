@@ -1,10 +1,9 @@
 #!/usr/bin/env node
+import program from 'commander';
 import genDiff from '..';
 
-const program = require('commander');
-
 program
-  .version('0.1.10')
+  .version('0.2.1')
   .arguments('<firstConfig> <secondConfig> [format]')
   .action((first, second, format) => console.log(genDiff(first, second, format)));
 
