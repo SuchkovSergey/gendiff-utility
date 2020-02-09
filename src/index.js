@@ -32,6 +32,7 @@ const parse = (contentOne, contentTwo) => {
       valueAfter,
       children,
     };
+
     return [...acc, { ...root }];
   };
 
