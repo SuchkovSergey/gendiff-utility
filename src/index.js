@@ -16,32 +16,13 @@ const parse = (contentOne, contentTwo) => {
       ? parse(valueBefore, valueAfter) : [];
 
     const states = [
-      {
-        state: 'deleted',
-        check: !keysTwo.includes(key),
-      },
-      {
-        state: 'added',
-        check: !keysOne.includes(key),
-      },
-      {
-        state: 'changedInside',
-        check: valueBefore instanceof Object && valueAfter instanceof Object,
-      },
-      {
-        state: 'changedObject',
-        check: valueBefore instanceof Object || valueAfter instanceof Object,
-      },
-      {
-        state: 'unchanged',
-        check: valueBefore === valueAfter,
-      },
-      {
-        state: 'changed',
-        check: true,
-      },
+      { state: 'deleted', check: !keysTwo.includes(key) },
+      { state: 'added', check: !keysOne.includes(key) },
+      { state: 'changedInside', check: valueBefore instanceof Object && valueAfter instanceof Object },
+      { state: 'changedObject', check: valueBefore instanceof Object || valueAfter instanceof Object },
+      { state: 'unchanged', check: valueBefore === valueAfter },
+      { state: 'changed', check: true },
     ];
-
     const currentState = states.find(({ check }) => check).state;
 
     const root = {
