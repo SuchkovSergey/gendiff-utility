@@ -1,4 +1,3 @@
-
 const stringTypes = [
   {
     str: () => '[complex value]',
@@ -14,29 +13,29 @@ const stringTypes = [
   },
 ];
 
-const render = (ast, currentName = '') => {
+const render = (ast, currentPropName = '') => {
   const reducer = (acc, node) => {
-    const name = (currentName === '') ? `${node.name}` : `${currentName}.${node.name}`;
+    const name = (currentPropName === '') ? `${node.name}` : `${currentPropName}.${node.name}`;
     const stringMake = (valueType) => {
       const object = stringTypes.find(({ check }) => check(node[valueType]));
       return object.str(node[valueType]);
     };
-    const before = stringMake('valueBefore');
-    const after = stringMake('valueAfter');
+    const contentBefore = stringMake('valueBefore');
+    const contentAfter = stringMake('valueAfter');
     const state = node.currentState;
-    const firstPart = `Property '${name}' was`;
-    const strUpdated = `${firstPart} updated. From ${before} to ${after}\r\n`;
+    const firstStrPart = `Property '${name}' was`;
+    const strUpdated = `${firstStrPart} updated. From ${contentBefore} to ${contentAfter}\r\n`;
 
-    const newString = {
-      deleted: `${firstPart} removed\r\n`,
+    const newStringOptions = {
+      deleted: `${firstStrPart} removed\r\n`,
       changedInside: `${strUpdated}${render(node.children, name)}`,
-      changedObj: strUpdated,
+      changedObject: strUpdated,
       changed: strUpdated,
-      unchanged: `${firstPart}n't changed\r\n`,
-      added: `${firstPart} added with value: ${after}\r\n`,
+      unchanged: `${firstStrPart}n't changed\r\n`,
+      added: `${firstStrPart} added with value: ${contentAfter}\r\n`,
     };
 
-    return `${acc}${newString[state]}`;
+    return `${acc}${newStringOptions[state]}`;
   };
   return `${ast.reduce(reducer, '')}`;
 };

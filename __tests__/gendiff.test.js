@@ -3,8 +3,10 @@ import path from 'path';
 import genDiff from '../src';
 
 const pathStart = `${__dirname}/__fixtures__/`;
-
-const readTXTFile = (fileName) => fs.readFileSync(path.join(pathStart, `equality${fileName}.txt`), 'utf-8');
+const readTXTFile = (fileName) => {
+  const pathToFile = path.join(pathStart, `equality${fileName}.txt`);
+  return fs.readFileSync(pathToFile, 'utf-8');
+};
 const pathConstruct = (name, format) => `${pathStart}${name}.${format}`;
 
 test.each([
