@@ -43,5 +43,8 @@
   "bugs": {
     "url": "https://github.com/Sergey89274291549/frontend-project-lvl2/issues"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "homepage": "https://github.com/Sergey89274291549/frontend-project-lvl2#readme"
 }

@@ -1,4 +1,4 @@
-name: Node CI
+name: Node.js CI
 
 on:
   - push
@@ -20,7 +20,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: npm test
         run: |
-          make jest
+          make test
         env:
           CI: true
       - name: Run linter
