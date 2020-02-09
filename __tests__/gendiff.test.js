@@ -4,28 +4,29 @@ import genDiff from '../src';
 
 const pathStart = `${__dirname}/__fixtures__/`;
 
-const readTXTFile = (fileName) => fs.readFileSync(path.join(pathStart, `${fileName}.txt`), 'utf-8');
+const readTXTFile = (fileName) => fs.readFileSync(path.join(pathStart, `equality${fileName}.txt`), 'utf-8');
+const pathConstruct = (name, format) => `${pathStart}${name}.${format}`;
 
 test.each([
-  [`${pathStart}before.json`, `${pathStart}after.json`, readTXTFile('equalityTest')],
-  [`${pathStart}before.yml`, `${pathStart}after.yml`, readTXTFile('equalityTest')],
-  [`${pathStart}before.ini`, `${pathStart}after.ini`, readTXTFile('equalityTestINI')],
+  [pathConstruct('before', 'json'), pathConstruct('after', 'json'), readTXTFile('Test')],
+  [pathConstruct('before', 'yml'), pathConstruct('after', 'yml'), readTXTFile('Test')],
+  [pathConstruct('before', 'ini'), pathConstruct('after', 'ini'), readTXTFile('TestINI')],
 ])('genDiff branch %#', (a, b, expected) => {
   expect(genDiff(a, b)).toBe(expected);
 });
 
 test.each([
-  [`${pathStart}before.json`, `${pathStart}after.json`, readTXTFile('equalityPlainTest')],
-  [`${pathStart}before.yml`, `${pathStart}after.yml`, readTXTFile('equalityPlainTest')],
-  [`${pathStart}before.ini`, `${pathStart}after.ini`, readTXTFile('equalityPlainTestINI')],
+  [pathConstruct('before', 'json'), pathConstruct('after', 'json'), readTXTFile('PlainTest')],
+  [pathConstruct('before', 'yml'), pathConstruct('after', 'yml'), readTXTFile('PlainTest')],
+  [pathConstruct('before', 'ini'), pathConstruct('after', 'ini'), readTXTFile('PlainTestINI')],
 ])('genDiff plain %#', (a, b, expected) => {
   expect(genDiff(a, b, 'plain')).toBe(expected);
 });
 
 test.each([
-  [`${pathStart}before.json`, `${pathStart}after.json`, readTXTFile('equalityJsonTest')],
-  [`${pathStart}before.yml`, `${pathStart}after.yml`, readTXTFile('equalityJsonTest')],
-  [`${pathStart}before.ini`, `${pathStart}after.ini`, readTXTFile('equalityJsonTestINI')],
+  [pathConstruct('before', 'json'), pathConstruct('after', 'json'), readTXTFile('JsonTest')],
+  [pathConstruct('before', 'yml'), pathConstruct('after', 'yml'), readTXTFile('JsonTest')],
+  [pathConstruct('before', 'ini'), pathConstruct('after', 'ini'), readTXTFile('JsonTestINI')],
 ])('genDiff json %#', (a, b, expected) => {
   expect(genDiff(a, b, 'json')).toBe(expected);
 });
