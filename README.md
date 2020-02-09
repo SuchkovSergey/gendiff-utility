@@ -2,9 +2,11 @@
 
 С GitHub Actions возникают проблемы. Ругается на то, что "jest: not found", хотя на Travis все прекрасно проходит. Разобраться в проблеме самостоятельно пока не могу. 
 
-<a href="https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/maintainability"><img src="https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/maintainability" /></a>
+[![Maintainability](https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/maintainability)](https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/maintainability)
 
-<a href="https://travis-ci.com/Sergey89274291549/frontend-project-lvl2"><img src="https://travis-ci.com/Sergey89274291549/frontend-project-lvl2.svg?branch=master" width="80"/></a>
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/test_coverage)](https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/test_coverage)
+
+[![Build Status](https://travis-ci.com/Sergey89274291549/frontend-project-lvl2.svg?branch=master)](https://travis-ci.com/Sergey89274291549/frontend-project-lvl2)
 
 How to use gendiff utilite:
 
