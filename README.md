@@ -1,4 +1,4 @@
-![](https://github.com/Sergey89274291549/frontend-project-lvl2/workflows/nodejs.yml/badge.svg?branch=master)
+[![Node CI](https://github.com/Sergey89274291549/frontend-project-lvl2/workflows/Node%20CI/badge.svg)](https://github.com/Sergey89274291549/frontend-project-lvl2/actions)
 
 <a href="https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/maintainability"><img src="https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/maintainability" /></a>
 
