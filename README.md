@@ -1,3 +1,5 @@
+<a href="https://github.com/Sergey89274291549/frontend-project-lvl2/workflows/nodejs.yml/badge.svg"><img src="https://github.com/Sergey89274291549/frontend-project-lvl2/workflows/nodejs.yml/badge.svg" /></a>
+
 <a href="https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/maintainability"><img src="https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/maintainability" /></a>
 
 <a href="https://travis-ci.com/Sergey89274291549/frontend-project-lvl2"><img src="https://travis-ci.com/Sergey89274291549/frontend-project-lvl2.svg?branch=master" width="80"/></a>

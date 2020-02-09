@@ -1,38 +1,55 @@
-import pathParse from './parsers';
-import branchRender from './formatters/branch';
-import plainRender from './formatters/plain';
-import jsonRender from './formatters/json';
+import fs from 'fs';
+import * as _ from 'lodash';
+import chooseParseFunc from './parsers';
+import chooseFormatFunc from './formatters/index';
 
-const parse = (firstFile, secondFile) => {
+const parse = (firstFile, secondFile) => { // naming
   const keysOne = Object.keys(firstFile);
   const keysTwo = Object.keys(secondFile);
-  const result = [];
+  const keys = [...keysOne, ...keysTwo];
+  const uniqKeys = _.uniq(keys);
+  const ast = [];
 
   const reducerFirst = (acc, key) => {
-    const valueBefore = firstFile[key] || '';
-    const valueAfter = secondFile[key] || '';
+    const valueBefore = keysOne.includes(key) ? firstFile[key] : '';
+    const valueAfter = keysTwo.includes(key) ? secondFile[key] : '';
     const isBeforeObj = valueBefore instanceof Object;
     const isAfterObj = valueAfter instanceof Object;
     const children = isBeforeObj && isAfterObj ? parse(valueBefore, valueAfter) : [];
 
-    let currentState = '';
+    const states = [
+      {
+        state: 'deleted',
+        check: () => !keysTwo.includes(key),
+      },
+      {
+        state: 'added',
+        check: () => !keysOne.includes(key),
+      },
+      {
+        state: 'changedInside',
+        check: () => isBeforeObj && isAfterObj,
+      },
+      {
+        state: 'changedObj',
+        check: () => isBeforeObj || isAfterObj,
+      },
+      {
+        state: 'unchanged',
+        check: () => valueBefore === valueAfter,
+      },
+      {
+        state: 'changed',
+        check: () => true,
+      },
+    ];
 
-    switch (true) {
-      case !keysTwo.includes(key):
-        currentState = 'deleted';
-        break;
-      case isBeforeObj && isAfterObj:
-        currentState = 'changedInside';
-        break;
-      case isBeforeObj || isAfterObj:
-        currentState = 'changedObj';
-        break;
-      case valueBefore === valueAfter:
-        currentState = 'unchanged';
-        break;
-      default:
-        currentState = 'changed';
-    }
+    const getState = () => {
+      const object = states.find(({ check }) => check());
+      return object.state;
+    };
+
+    const currentState = getState();
 
     const root = {
       name: key,
@@ -44,37 +61,20 @@ const parse = (firstFile, secondFile) => {
     return [...acc, { ...root }];
   };
 
-  const firstStep = keysOne.reduce(reducerFirst, result);
-
-  const reducerSecond = (acc, key) => {
-    const root = {
-      name: key,
-      currentState: 'added',
-      valueBefore: '',
-      valueAfter: secondFile[key],
-      children: [],
-    };
-    if (!keysOne.includes(key)) {
-      return [...acc, { ...root }];
-    }
-    return acc;
-  };
-
-  return keysTwo.reduce(reducerSecond, firstStep);
+  return uniqKeys.reduce(reducerFirst, ast);
 };
 
-const formatters = {
-  branch: branchRender,
-  plain: plainRender,
-  json: jsonRender,
+const parseFile = (pathToFile) => {
+  const parseFunc = chooseParseFunc(pathToFile);
+  return parseFunc(fs.readFileSync(pathToFile, 'utf-8'));
 };
 
-const genDiff = (pathOne, pathTwo, format = 'branch') => {
-  const firstFile = pathParse(pathOne);
-  const secondFile = pathParse(pathTwo);
+const genDiff = (pathOne, pathTwo, formatName = 'branch') => {
+  const firstFile = parseFile(pathOne);
+  const secondFile = parseFile(pathTwo);
   const ast = parse(firstFile, secondFile);
-  const formatter = formatters[format];
-  return formatter ? formatter(ast) : null;
+  const formatFunc = chooseFormatFunc(formatName);
+  return formatFunc(ast);
 };
 
 export default genDiff;

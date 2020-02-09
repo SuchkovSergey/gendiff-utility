@@ -1,30 +1,48 @@
 const render = (ast, currentName = '') => {
   const reducer = (acc, node) => {
     const name = (currentName === '') ? `${node.name}` : `${currentName}.${node.name}`;
-    let before;
-    let after;
 
-    switch (true) {
-      case node.valueBefore instanceof Object:
-        before = '[complex value]';
-        break;
-      case typeof node.valueBefore === 'string':
-        before = `'${node.valueBefore}'`;
-        break;
-      default:
-        before = node.valueBefore;
-    }
+    const beforeStr = [
+      {
+        str: '[complex value]',
+        check: () => node.valueBefore instanceof Object,
+      },
+      {
+        str: `'${node.valueBefore}'`,
+        check: () => typeof node.valueBefore === 'string',
+      },
+      {
+        str: node.valueBefore,
+        check: () => true,
+      },
+    ];
 
-    switch (true) {
-      case node.valueAfter instanceof Object:
-        after = '[complex value]';
-        break;
-      case typeof node.valueAfter === 'string':
-        after = `'${node.valueAfter}'`;
-        break;
-      default:
-        after = node.valueAfter;
-    }
+    const afterStr = [
+      {
+        str: '[complex value]',
+        check: () => node.valueAfter instanceof Object,
+      },
+      {
+        str: `'${node.valueAfter}'`,
+        check: () => typeof node.valueAfter === 'string',
+      },
+      {
+        str: node.valueAfter,
+        check: () => true,
+      },
+    ];
+
+    const getBeforeStr = () => {
+      const object = beforeStr.find(({ check }) => check());
+      return object.str;
+    };
+    const getAfterStr = () => {
+      const object = afterStr.find(({ check }) => check());
+      return object.str;
+    };
+
+    const before = getBeforeStr();
+    const after = getAfterStr();
 
     const state = node.currentState;
     const firstPart = `Property '${name}' was`;
