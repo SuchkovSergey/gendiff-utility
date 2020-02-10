@@ -1,7 +1,5 @@
 [![Node CI](https://github.com/Sergey89274291549/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg)](https://github.com/Sergey89274291549/frontend-project-lvl2/actions)
 
-С GitHub Actions возникают проблемы. Ругается на то, что "jest: not found", хотя на Travis все прекрасно проходит. Разобраться в проблеме самостоятельно пока не могу. 
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/maintainability)](https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/test_coverage)](https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/test_coverage)
