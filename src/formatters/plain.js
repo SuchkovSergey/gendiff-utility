@@ -24,18 +24,18 @@ const render = (ast, currentPropName = '') => {
     const contentAfter = stringMake('valueAfter');
     const state = node.currentState;
     const firstStrPart = `Property '${name}' was`;
-    const strUpdated = `${firstStrPart} updated. From ${contentBefore} to ${contentAfter}\r\n`;
+    const contentUpdated = `${firstStrPart} updated. From ${contentBefore} to ${contentAfter}\r\n`;
 
-    const newStringOptions = {
+    const stringOptions = {
       deleted: `${firstStrPart} removed\r\n`,
-      changedInside: `${strUpdated}${render(node.children, name)}`,
-      changedObject: strUpdated,
-      changed: strUpdated,
+      changedInside: `${contentUpdated}${render(node.children, name)}`,
+      changedObject: contentUpdated,
+      changed: contentUpdated,
       unchanged: `${firstStrPart}n't changed\r\n`,
       added: `${firstStrPart} added with value: ${contentAfter}\r\n`,
     };
 
-    return `${acc}${newStringOptions[state]}`;
+    return `${acc}${stringOptions[state]}`;
   };
   return `${ast.reduce(reducer, '')}`;
 };

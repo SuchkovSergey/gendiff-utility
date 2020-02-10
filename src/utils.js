@@ -1,12 +1,12 @@
-const objStringify = (object, indent = '') => {
+const objectStringify = (object, indent = '') => {
   const newIndent = `${indent}  `;
   const keys = Object.keys(object);
   const reducer = (acc, key) => {
-    const strOne = `${newIndent}  ${key}: ${object[key]}\r\n`;
-    return `${acc}  ${strOne}`;
+    const newString = `${newIndent}  ${key}: ${object[key]}\r\n`;
+    return `${acc}  ${newString}`;
   };
-  const str = keys.reduce(reducer, '{\r\n');
-  return `${str}${newIndent}}`;
+  const currentString = keys.reduce(reducer, '{\r\n');
+  return `${currentString}${newIndent}}`;
 };
 
-export default objStringify;
+export default objectStringify;

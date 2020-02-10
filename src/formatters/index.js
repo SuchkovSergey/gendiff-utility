@@ -1,11 +1,11 @@
-import branchRender from './branch';
-import plainRender from './plain';
-import jsonRender from './json';
+import branchFormatter from './branch';
+import plainFormatter from './plain';
+import jsonFormatter from './json';
 
 const formatters = {
-  branch: branchRender,
-  plain: plainRender,
-  json: jsonRender,
+  branch: branchFormatter,
+  plain: plainFormatter,
+  json: jsonFormatter,
 };
 
 const chooseFormatFunc = (currentFormat) => formatters[currentFormat] || null;

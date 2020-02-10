@@ -10,17 +10,16 @@ const render = (ast, ind = '', ind1 = '') => {
     const state = node.currentState;
     const strPlus = `${newIndent}+ ${node.name}: ${after}\r\n`;
     const strMinus = `${newIndent}- ${node.name}: ${before}\r\n`;
-    const strUnchanged = `${newIndent}  ${node.name}: ${before}\r\n`;
     const ind2 = `${ind}    `;
-    const newStringOptions = {
+    const stringOptions = {
       deleted: strMinus,
       changedInside: `${newIndent}  ${node.name}: ${render(node.children, ind2, ind2)}\r\n`,
       changedObject: `${strMinus}${strPlus}`,
       changed: `${strMinus}${strPlus}`,
-      unchanged: strUnchanged,
+      unchanged: `${newIndent}  ${node.name}: ${before}\r\n`,
       added: strPlus,
     };
-    return `${acc}${newStringOptions[state]}`;
+    return `${acc}${stringOptions[state]}`;
   };
   return `${ast.reduce(reducer, '{\r\n')}${ind1}}`;
 };

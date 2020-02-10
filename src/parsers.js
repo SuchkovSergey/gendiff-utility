@@ -10,8 +10,8 @@ const parsers = {
 
 const chooseParseFunc = (pathToFile) => {
   const extName = path.extname(pathToFile);
-  const func = parsers[extName];
-  return func || null;
+  const parseFunc = parsers[extName];
+  return parseFunc || null;
 };
 
 export default chooseParseFunc;

@@ -7,7 +7,6 @@ const parse = (contentOne, contentTwo) => {
   const keysOne = Object.keys(contentOne);
   const keysTwo = Object.keys(contentTwo);
   const uniqKeys = _.uniq([...keysOne, ...keysTwo]);
-  const ast = [];
 
   const reducer = (acc, key) => {
     const valueBefore = keysOne.includes(key) ? contentOne[key] : '';
@@ -36,7 +35,7 @@ const parse = (contentOne, contentTwo) => {
     return [...acc, { ...root }];
   };
 
-  return uniqKeys.reduce(reducer, ast);
+  return uniqKeys.reduce(reducer, []);
 };
 
 const parseContent = (pathToFile) => {
