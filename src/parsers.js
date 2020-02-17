@@ -8,10 +8,10 @@ const parsers = {
   '.ini': ini.parse,
 };
 
-const chooseParseFunc = (pathToFile) => {
-  const extName = path.extname(pathToFile);
-  const parseFunc = parsers[extName];
-  return parseFunc || null;
+const chooseParseFunc = (currentPath) => {
+  const format = path.extname(currentPath);
+  const parse = parsers[format];
+  return parse || null;
 };
 
 export default chooseParseFunc;

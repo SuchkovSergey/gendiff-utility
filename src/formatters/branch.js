@@ -5,21 +5,21 @@ const render = (ast, ind = '', ind1 = '') => {
   const reducer = (acc, node) => {
     const strBuild = (valueType) => (node[valueType] instanceof Object
       ? objStringify(node[valueType], newIndent) : node[valueType]);
-    const before = strBuild('valueBefore');
-    const after = strBuild('valueAfter');
+    const valueBefore = strBuild('valueBefore');
+    const valueAfter = strBuild('valueAfter');
     const state = node.currentState;
-    const strPlus = `${newIndent}+ ${node.name}: ${after}\r\n`;
-    const strMinus = `${newIndent}- ${node.name}: ${before}\r\n`;
+    const strPlus = `${newIndent}+ ${node.name}: ${valueAfter}\r\n`;
+    const strMinus = `${newIndent}- ${node.name}: ${valueBefore}\r\n`;
     const ind2 = `${ind}    `;
     const stringOptions = {
-      deleted: strMinus,
-      changedInside: `${newIndent}  ${node.name}: ${render(node.children, ind2, ind2)}\r\n`,
-      changedObject: `${strMinus}${strPlus}`,
-      changed: `${strMinus}${strPlus}`,
-      unchanged: `${newIndent}  ${node.name}: ${before}\r\n`,
-      added: strPlus,
+      deleted: () => strMinus,
+      changedInside: () => `${newIndent}  ${node.name}: ${render(node.children, ind2, ind2)}\r\n`,
+      changedObject: () => `${strMinus}${strPlus}`,
+      changed: () => `${strMinus}${strPlus}`,
+      unchanged: () => `${newIndent}  ${node.name}: ${valueBefore}\r\n`,
+      added: () => strPlus,
     };
-    return `${acc}${stringOptions[state]}`;
+    return `${acc}${stringOptions[state]()}`;
   };
   return `${ast.reduce(reducer, '{\r\n')}${ind1}}`;
 };

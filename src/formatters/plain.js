@@ -15,27 +15,26 @@ const stringTypes = [
 
 const render = (ast, currentPropName = '') => {
   const reducer = (acc, node) => {
-    const name = (currentPropName === '') ? `${node.name}` : `${currentPropName}.${node.name}`;
-    const stringMake = (valueType) => {
-      const object = stringTypes.find(({ check }) => check(node[valueType]));
-      return object.str(node[valueType]);
-    };
-    const contentBefore = stringMake('valueBefore');
-    const contentAfter = stringMake('valueAfter');
+    const propertyName = (currentPropName === '') ? `${node.name}` : `${currentPropName}.${node.name}`;
+    const makeString = (valueType) => stringTypes
+      .find(({ check }) => check(node[valueType]))
+      .str(node[valueType]);
+    const valueBefore = makeString('valueBefore');
+    const valueAfter = makeString('valueAfter');
     const state = node.currentState;
-    const firstStrPart = `Property '${name}' was`;
-    const contentUpdated = `${firstStrPart} updated. From ${contentBefore} to ${contentAfter}\r\n`;
+    const firstPartOfString = `Property '${propertyName}' was`;
+    const contentUpdated = `${firstPartOfString} updated. From ${valueBefore} to ${valueAfter}\r\n`;
 
     const stringOptions = {
-      deleted: `${firstStrPart} removed\r\n`,
-      changedInside: `${contentUpdated}${render(node.children, name)}`,
-      changedObject: contentUpdated,
-      changed: contentUpdated,
-      unchanged: `${firstStrPart}n't changed\r\n`,
-      added: `${firstStrPart} added with value: ${contentAfter}\r\n`,
+      deleted: () => `${firstPartOfString} removed\r\n`,
+      changedInside: () => `${contentUpdated}${render(node.children, propertyName)}`,
+      changedObject: () => contentUpdated,
+      changed: () => contentUpdated,
+      unchanged: () => `${firstPartOfString}n't changed\r\n`,
+      added: () => `${firstPartOfString} added with value: ${valueAfter}\r\n`,
     };
 
-    return `${acc}${stringOptions[state]}`;
+    return `${acc}${stringOptions[state]()}`;
   };
   return `${ast.reduce(reducer, '')}`;
 };

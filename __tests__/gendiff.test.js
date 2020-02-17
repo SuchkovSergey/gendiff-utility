@@ -2,20 +2,36 @@ import fs from 'fs';
 import path from 'path';
 import genDiff from '../src';
 
-const pathStart = `${__dirname}/__fixtures__/`;
-const readTXTFile = (fileName) => {
-  const pathToFile = path.join(pathStart, `equality${fileName}.txt`);
-  return fs.readFileSync(pathToFile, 'utf-8');
-};
-const pathConstruct = (name, format) => `${pathStart}${name}.${format}`;
+const formats = ['json', 'yml', 'ini'];
+const getFixturePath = (name) => path.join(__dirname, '__fixtures__', name);
 
-// сократил количество тестов с 9 до 3,
-// так как в данном случае проверяется как работа парсеров для каждого типа файла,
-// так и каждый вариант вывода дифа
-test.each([
-  [pathConstruct('before', 'json'), pathConstruct('after', 'json'), readTXTFile('Test'), 'branch'],
-  [pathConstruct('before', 'yml'), pathConstruct('after', 'yml'), readTXTFile('PlainTest'), 'plain'],
-  [pathConstruct('before', 'ini'), pathConstruct('after', 'ini'), readTXTFile('JsonTestINI'), 'json'],
-])('genDiff %#', (a, b, expected, format) => {
-  expect(genDiff(a, b, format)).toBe(expected);
+let expectedBranchDiff;
+let expectedPlainDiff;
+let expectedJSONDiff;
+
+beforeAll(() => {
+  expectedBranchDiff = fs.readFileSync(getFixturePath('equalityTest.txt'), 'utf-8');
+  expectedPlainDiff = fs.readFileSync(getFixturePath('equalityPlainTest.txt'), 'utf-8');
+  expectedJSONDiff = fs.readFileSync(getFixturePath('equalityJsonTest.txt'), 'utf-8');
+});
+
+test.each(formats)('genDiff branch-format %s', (format) => {
+  const beforeFilePath = getFixturePath(`before.${format}`);
+  const afterFilePath = getFixturePath(`after.${format}`);
+  const actual = genDiff(beforeFilePath, afterFilePath);
+  expect(actual).toBe(expectedBranchDiff);
+});
+
+test.each(formats)('genDiff plain-format %s', (format) => {
+  const beforeFilePath = getFixturePath(`before.${format}`);
+  const afterFilePath = getFixturePath(`after.${format}`);
+  const actual = genDiff(beforeFilePath, afterFilePath, 'plain');
+  expect(actual).toBe(expectedPlainDiff);
+});
+
+test.each(formats)('genDiff json-format %s', (format) => {
+  const beforeFilePath = getFixturePath(`before.${format}`);
+  const afterFilePath = getFixturePath(`after.${format}`);
+  const actual = genDiff(beforeFilePath, afterFilePath, 'json');
+  expect(actual).toBe(expectedJSONDiff);
 });
