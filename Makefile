@@ -8,6 +8,7 @@ push:
 lint:
 	npx eslint .
 build:
+	rm -rf dist
 	npm run build
 fix:
 	sudo npx eslint --fix .
