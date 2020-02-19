@@ -28,8 +28,7 @@ const render = (ast, currentPropName = '') => {
     const stringOptions = {
       deleted: () => `${firstPartOfString} removed\r\n`,
       changedInside: () => `${contentUpdated}${render(node.children, propertyName)}`,
-      changedObject: () => contentUpdated,
-      changed: () => contentUpdated,
+      changedOutside: () => contentUpdated,
       unchanged: () => `${firstPartOfString}n't changed\r\n`,
       added: () => `${firstPartOfString} added with value: ${valueAfter}\r\n`,
     };

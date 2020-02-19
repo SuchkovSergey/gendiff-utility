@@ -14,8 +14,7 @@ const render = (ast, ind = '', ind1 = '') => {
     const stringOptions = {
       deleted: () => strMinus,
       changedInside: () => `${newIndent}  ${node.name}: ${render(node.children, ind2, ind2)}\r\n`,
-      changedObject: () => `${strMinus}${strPlus}`,
-      changed: () => `${strMinus}${strPlus}`,
+      changedOutside: () => `${strMinus}${strPlus}`,
       unchanged: () => `${newIndent}  ${node.name}: ${valueBefore}\r\n`,
       added: () => strPlus,
     };
