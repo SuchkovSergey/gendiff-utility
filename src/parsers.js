@@ -1,5 +1,4 @@
 import yaml from 'js-yaml';
-import path from 'path';
 import ini from 'ini';
 
 const parsers = {
@@ -8,10 +7,6 @@ const parsers = {
   '.ini': ini.parse,
 };
 
-const chooseParseFunc = (currentPath) => {
-  const format = path.extname(currentPath);
-  const parse = parsers[format];
-  return parse || null;
-};
+const chooseParse = (extention) => parsers[extention] || null;
 
-export default chooseParseFunc;
+export default chooseParse;
