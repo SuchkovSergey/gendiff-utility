@@ -7,27 +7,19 @@ import chooseFormat from './formatters';
 const stateOptions = [
   {
     state: 'deleted',
-    check: (content1, content2, key) => !_.has(content2, key),
+    check: (_valueBefore, valueAfter) => valueAfter === null,
   },
   {
     state: 'added',
-    check: (content1, content2, key) => !_.has(content1, key),
+    check: (valueBefore) => valueBefore === null,
   },
   {
     state: 'changedInside',
-    check: (content1, content2, key) => {
-      const valueBefore = _.has(content1, key) ? content1[key] : null;
-      const valueAfter = _.has(content2, key) ? content2[key] : null;
-      return valueBefore instanceof Object && valueAfter instanceof Object;
-    },
+    check: (valueBefore, valueAft) => valueBefore instanceof Object && valueAft instanceof Object,
   },
   {
     state: 'unchanged',
-    check: (content1, content2, key) => {
-      const valueBefore = _.has(content1, key) ? content1[key] : null;
-      const valueAfter = _.has(content2, key) ? content2[key] : null;
-      return valueBefore === valueAfter;
-    },
+    check: (valueBefore, valueAfter) => valueBefore === valueAfter,
   },
   {
     state: 'changedOutside',
@@ -35,16 +27,14 @@ const stateOptions = [
   },
 ];
 
-
 const parse = (contentOne, contentTwo) => {
   const uniqKeys = _.union(_.keys(contentOne), _.keys(contentTwo));
-
   const customMap = (key) => {
     const valueBefore = _.has(contentOne, key) ? contentOne[key] : null;
     const valueAfter = _.has(contentTwo, key) ? contentTwo[key] : null;
-    const children = valueBefore instanceof Object && valueAfter instanceof Object
-      ? parse(valueBefore, valueAfter) : [];
-    const currentState = stateOptions.find(({ check }) => check(contentOne, contentTwo, key)).state;
+    const isValuesAreObjects = valueBefore instanceof Object && valueAfter instanceof Object;
+    const children = isValuesAreObjects ? parse(valueBefore, valueAfter) : [];
+    const currentState = stateOptions.find(({ check }) => check(valueBefore, valueAfter)).state;
     return {
       name: key,
       currentState,
@@ -53,7 +43,6 @@ const parse = (contentOne, contentTwo) => {
       children,
     };
   };
-
   return uniqKeys.map(customMap);
 };
 
