@@ -1,26 +1,26 @@
 const stringTypes = [
   {
-    str: () => '[complex value]',
+    string: () => '[complex value]',
     check: (value) => value instanceof Object,
   },
   {
-    str: (value) => `'${value}'`,
+    string: (value) => `'${value}'`,
     check: (value) => typeof value === 'string',
   },
   {
-    str: (value) => value,
+    string: (value) => value,
     check: () => true,
   },
 ];
 
-const render = (ast, currentPropName = '') => {
+const render = (ast, currentPropName = null) => {
   const mapper = (node) => {
-    const propertyName = (currentPropName === '') ? `${node.name}` : `${currentPropName}.${node.name}`;
-    const makeString = (valueType) => stringTypes
+    const propertyName = (currentPropName === null) ? `${node.name}` : `${currentPropName}.${node.name}`;
+    const buildString = (valueType) => stringTypes
       .find(({ check }) => check(node[valueType]))
-      .str(node[valueType]);
-    const valueBefore = makeString('valueBefore');
-    const valueAfter = makeString('valueAfter');
+      .string(node[valueType]);
+    const valueBefore = buildString('valueBefore');
+    const valueAfter = buildString('valueAfter');
     const state = node.currentState;
     const firstPartOfString = `Property '${propertyName}' was`;
     const contentUpdated = `${firstPartOfString} updated. From ${valueBefore} to ${valueAfter}\r\n`;

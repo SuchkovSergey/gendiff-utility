@@ -1,24 +1,25 @@
-import objStringify from '../utils';
+import objectStringify from '../utils';
 
 const render = (ast, ind = '', ind1 = '') => {
   const newIndent = `${ind}  `;
   const mapper = (node) => {
-    const strBuild = (valueType) => (node[valueType] instanceof Object
-      ? objStringify(node[valueType], newIndent) : node[valueType]);
-    const valueBefore = strBuild('valueBefore');
-    const valueAfter = strBuild('valueAfter');
-    const state = node.currentState;
-    const strPlus = `${newIndent}+ ${node.name}: ${valueAfter}\r\n`;
-    const strMinus = `${newIndent}- ${node.name}: ${valueBefore}\r\n`;
+    const nodeName = node.name;
+    const nodeState = node.currentState;
+    const buildString = (valueType) => (node[valueType] instanceof Object
+      ? objectStringify(node[valueType], newIndent) : node[valueType]);
+    const stringBefore = buildString('valueBefore');
+    const stringAfter = buildString('valueAfter');
+    const stringPlus = `${newIndent}+ ${nodeName}: ${stringAfter}\r\n`;
+    const stringMinus = `${newIndent}- ${nodeName}: ${stringBefore}\r\n`;
     const ind2 = `${ind}    `;
     const stringOptions = {
-      deleted: () => strMinus,
-      changedInside: () => `${newIndent}  ${node.name}: ${render(node.children, ind2, ind2)}\r\n`,
-      changedOutside: () => `${strMinus}${strPlus}`,
-      unchanged: () => `${newIndent}  ${node.name}: ${valueBefore}\r\n`,
-      added: () => strPlus,
+      deleted: () => stringMinus,
+      changedInside: () => `${newIndent}  ${nodeName}: ${render(node.children, ind2, ind2)}\r\n`,
+      changedOutside: () => `${stringMinus}${stringPlus}`,
+      unchanged: () => `${newIndent}  ${nodeName}: ${stringBefore}\r\n`,
+      added: () => stringPlus,
     };
-    return stringOptions[state]();
+    return stringOptions[nodeState]();
   };
   const mapped = ast.map(mapper).join('');
   return `{\r\n${mapped}${ind1}}`;
