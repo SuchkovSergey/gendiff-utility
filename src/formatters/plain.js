@@ -14,7 +14,7 @@ const stringTypes = [
 ];
 
 const render = (ast, currentPropName = '') => {
-  const reducer = (acc, node) => {
+  const mapper = (node) => {
     const propertyName = (currentPropName === '') ? `${node.name}` : `${currentPropName}.${node.name}`;
     const makeString = (valueType) => stringTypes
       .find(({ check }) => check(node[valueType]))
@@ -32,10 +32,9 @@ const render = (ast, currentPropName = '') => {
       unchanged: () => `${firstPartOfString}n't changed\r\n`,
       added: () => `${firstPartOfString} added with value: ${valueAfter}\r\n`,
     };
-
-    return `${acc}${stringOptions[state]()}`;
+    return stringOptions[state]();
   };
-  return `${ast.reduce(reducer, '')}`;
+  return ast.map(mapper).join('');
 };
 
 export default render;

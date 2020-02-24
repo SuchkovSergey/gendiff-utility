@@ -2,7 +2,7 @@ import objStringify from '../utils';
 
 const render = (ast, ind = '', ind1 = '') => {
   const newIndent = `${ind}  `;
-  const reducer = (acc, node) => {
+  const mapper = (node) => {
     const strBuild = (valueType) => (node[valueType] instanceof Object
       ? objStringify(node[valueType], newIndent) : node[valueType]);
     const valueBefore = strBuild('valueBefore');
@@ -18,9 +18,10 @@ const render = (ast, ind = '', ind1 = '') => {
       unchanged: () => `${newIndent}  ${node.name}: ${valueBefore}\r\n`,
       added: () => strPlus,
     };
-    return `${acc}${stringOptions[state]()}`;
+    return stringOptions[state]();
   };
-  return `${ast.reduce(reducer, '{\r\n')}${ind1}}`;
+  const mapped = ast.map(mapper).join('');
+  return `{\r\n${mapped}${ind1}}`;
 };
 
 export default render;
