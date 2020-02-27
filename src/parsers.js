@@ -1,12 +1,18 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
+import _ from 'lodash';
 
 const parsers = {
-  '.json': JSON.parse,
-  '.yml': yaml.safeLoad,
-  '.ini': ini.parse,
+  json: JSON.parse,
+  yml: yaml.safeLoad,
+  ini: ini.parse,
 };
 
-const chooseParse = (extention) => parsers[extention] || null;
+const dataParse = (format, data) => {
+  if (!_.has(parsers, format)) {
+    throw new Error('Ooops, parser wasn\'t found :(');
+  }
+  return parsers[format](data);
+};
 
-export default chooseParse;
+export default dataParse;
