@@ -4,29 +4,6 @@ import path from 'path';
 import dataParse from './parsers';
 import dataFormat from './formatters';
 
-// const stateOptions = [
-//   {
-//     state: 'deleted',
-//     check: (_valueBefore, valueAfter) => valueAfter === null,
-//   },
-//   {
-//     state: 'added',
-//     check: (valueBefore) => valueBefore === null,
-//   },
-//   {
-//     state: 'changedInside',
-//     check: (valueBe, valueAft) => valueBefore instanceof Object && valueAft instanceof Object,
-//   },
-//   {
-//     state: 'unchanged',
-//     check: (valueBefore, valueAfter) => valueBefore === valueAfter,
-//   },
-//   {
-//     state: 'changedOutside',
-//     check: () => true,
-//   },
-// ];
-
 const parse = (contentOne, contentTwo) => {
   const uniqKeys = _.union(_.keys(contentOne), _.keys(contentTwo));
   const customMap = (key) => {
@@ -68,37 +45,3 @@ const genDiff = (pathOne, pathTwo, formatName = 'branch') => {
 };
 
 export default genDiff;
-
-
-// const parse = (contentOne, contentTwo) => {
-//   const uniqKeys = _.union(_.keys(contentOne), _.keys(contentTwo));
-//
-//   const customMap = (key) => {
-//     const root = {
-//       name: key,
-//       currentState: null,
-//       valueBefore: _.has(contentOne, key) ? contentOne[key] : null,
-//       valueAfter: _.has(contentTwo, key) ? contentTwo[key] : null,
-//       children: null,
-//     };
-//
-//     const areValuesObjects = root.valueBefore instanceof Object
-//       && root.valueAfter instanceof Object;
-//     root.children = areValuesObjects ? parse(root.valueBefore, root.valueAfter) : [];
-//
-//     if (!_.has(contentOne, key)) {
-//       root.currentState = 'added';
-//     } else if (!_.has(contentTwo, key)) {
-//       root.currentState = 'deleted';
-//     } else if (areValuesObjects) {
-//       root.currentState = 'changedInside';
-//     } else if (root.valueBefore === root.valueAfter) {
-//       root.currentState = 'unchanged';
-//     } else {
-//       root.currentState = 'changedOutside';
-//     }
-//
-//     return root;
-//   };
-//   return uniqKeys.map(customMap);
-// };
