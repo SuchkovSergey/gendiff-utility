@@ -7,9 +7,6 @@ There are three types of possible formats you can choose to watch the difference
  - plain
  - json
 
-The signature of gendiff is:
-    <firstConfig> <secondConfig> [format]
-
 Examples of using gendiff utilite:
 
 for JSON-format:
