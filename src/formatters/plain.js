@@ -1,4 +1,5 @@
 // import os from 'os';
+import _ from 'lodash';
 
 const stringTypes = [
   {
@@ -16,20 +17,20 @@ const stringTypes = [
 ];
 
 const render = (ast) => {
-  const inner = (currentAst, currentPropName = null) => {
+  const inner = (currentAst, currentPropName = '') => {
     const mapper = (node) => {
-      const propertyName = (currentPropName === null) ? `${node.name}` : `${currentPropName}.${node.name}`;
+      const propName = _.trim(`${currentPropName}.${node.name}`, '.');
       const buildString = (valueType) => stringTypes
         .find(({ check }) => check(node[valueType]))
         .string(node[valueType]);
 
       const stringOptions = {
-        deleted: () => `Property '${propertyName}' was removed`,
-        nested: () => `Property '${propertyName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}\r\n`// os.EOL
-          + `${inner(node.children, propertyName)}`,
-        changed: () => `Property '${propertyName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}`,
-        unchanged: () => `Property '${propertyName}' wasn't changed`,
-        added: () => `Property '${propertyName}' was added with value: ${buildString('valueAfter')}`,
+        deleted: () => `Property '${propName}' was removed`,
+        nested: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}\r\n`// os.EOL
+          + `${inner(node.children, propName)}`,
+        changed: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}`,
+        unchanged: () => `Property '${propName}' wasn't changed`,
+        added: () => `Property '${propName}' was added with value: ${buildString('valueAfter')}`,
       };
       return stringOptions[node.state]();
     };

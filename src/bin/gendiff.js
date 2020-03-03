@@ -5,7 +5,7 @@ import genDiff from '..';
 program
   .version('0.2.7')
   .arguments('<firstConfig> <secondConfig> [format]')
-  .action((first, second, format) => console.log(genDiff(first, second, format)));
+  .action((pathOne, pathTwo, format) => console.log(genDiff(pathOne, pathTwo, format)));
 
 program
   .description('Compares two configuration files and shows a difference.')
