@@ -9,11 +9,13 @@ const formatters = {
   json: jsonFormatter,
 };
 
-const dataFormat = (currentFormat, ast) => {
-  if (!_.has(formatters, currentFormat)) {
-    throw new Error('Oh, formatter wasn\'t found :(');
+const render = (format, ast) => {
+  switch (true) {
+    case _.has(formatters, format):
+      return formatters[format](ast);
+    default:
+      throw new Error(`Oh, ${format}-format wasn't found :(`);
   }
-  return formatters[currentFormat](ast);
 };
 
-export default dataFormat;
+export default render;

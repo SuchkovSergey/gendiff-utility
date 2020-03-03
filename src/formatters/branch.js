@@ -1,28 +1,31 @@
+// import os from 'os';
+import _ from 'lodash';
 import objectStringify from '../utils';
 
-const render = (ast, ind = '', ind1 = '') => {
-  const newIndent = `${ind}  `;
-  const mapper = (node) => {
-    const nodeName = node.name;
-    const nodeState = node.currentState;
-    const buildString = (valueType) => (node[valueType] instanceof Object
-      ? objectStringify(node[valueType], newIndent) : node[valueType]);
-    const stringBefore = buildString('valueBefore');
-    const stringAfter = buildString('valueAfter');
-    const stringPlus = `${newIndent}+ ${nodeName}: ${stringAfter}\r\n`;
-    const stringMinus = `${newIndent}- ${nodeName}: ${stringBefore}\r\n`;
-    const ind2 = `${ind}    `;
-    const stringOptions = {
-      deleted: () => stringMinus,
-      changedInside: () => `${newIndent}  ${nodeName}: ${render(node.children, ind2, ind2)}\r\n`,
-      changedOutside: () => `${stringMinus}${stringPlus}`,
-      unchanged: () => `${newIndent}  ${nodeName}: ${stringBefore}\r\n`,
-      added: () => stringPlus,
+const render = (ast) => {
+  const inner = (currentAst, depth) => {
+    const indent1 = _.repeat(' ', depth * 4 + 2);
+    const indent2 = _.repeat(' ', depth * 4);
+    const mapper = (node) => {
+      const buildString = (valueType) => {
+        const nodeElement = node[valueType];
+        return nodeElement instanceof Object ? objectStringify(nodeElement, depth) : nodeElement;
+      };
+
+      const stringOptions = {
+        deleted: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}`,
+        nested: () => `${indent1}  ${node.name}: ${inner(node.children, depth + 1)}`,
+        changed: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}\r\n`
+          + `${indent1}+ ${node.name}: ${buildString('valueAfter')}`, // os.EOL
+        unchanged: () => `${indent1}  ${node.name}: ${buildString('valueBefore')}`,
+        added: () => `${indent1}+ ${node.name}: ${buildString('valueAfter')}`,
+      };
+      return stringOptions[node.state]();
     };
-    return stringOptions[nodeState]();
+    const mapped = currentAst.map(mapper).join('\r\n'); // os.EOL
+    return `{\r\n${mapped}\r\n${indent2}}`;// os.EOL
   };
-  const mapped = ast.map(mapper).join('');
-  return `{\r\n${mapped}${ind1}}`;
+  return inner(ast, 0);
 };
 
 export default render;

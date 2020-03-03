@@ -8,11 +8,13 @@ const parsers = {
   ini: ini.parse,
 };
 
-const dataParse = (format, data) => {
-  if (!_.has(parsers, format)) {
-    throw new Error('Ooops, parser wasn\'t found :(');
+const parseData = (format, data) => {
+  switch (true) {
+    case _.has(parsers, format):
+      return parsers[format](data);
+    default:
+      throw new Error(`Ooops, parser for "${format}" wasn't found :(`);
   }
-  return parsers[format](data);
 };
 
-export default dataParse;
+export default parseData;
