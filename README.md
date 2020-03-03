@@ -1,12 +1,16 @@
-[![Node CI](https://github.com/Sergey89274291549/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg)](https://github.com/Sergey89274291549/frontend-project-lvl2/actions)
+[![Node CI](https://github.com/Sergey89274291549/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg)](https://github.com/Sergey89274291549/frontend-project-lvl2/actions)   [![Maintainability](https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/maintainability)](https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/maintainability)   [![Test Coverage](https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/test_coverage)](https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/test_coverage)   [![Build Status](https://travis-ci.com/Sergey89274291549/frontend-project-lvl2.svg?branch=master)](https://travis-ci.com/Sergey89274291549/frontend-project-lvl2)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/maintainability)](https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/maintainability)
+gendiff utilite provides the opportunity of comparing two files in different extentions (json,  yml and ini)
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/b2b8139f19047cd8714e/test_coverage)](https://codeclimate.com/github/Sergey89274291549/frontend-project-lvl2/test_coverage)
+There are three types of possible formats you can choose to watch the difference:
+ - branch
+ - plain
+ - json
 
-[![Build Status](https://travis-ci.com/Sergey89274291549/frontend-project-lvl2.svg?branch=master)](https://travis-ci.com/Sergey89274291549/frontend-project-lvl2)
+The signature of gendiff is:
+    <firstConfig> <secondConfig> [format]
 
-How to use gendiff utilite:
+Examples of using gendiff utilite:
 
 for JSON-format:
 
