@@ -1,4 +1,4 @@
-// import os from 'os';
+import os from 'os';
 import _ from 'lodash';
 
 const stringTypes = [
@@ -26,7 +26,7 @@ const render = (ast) => {
 
       const stringOptions = {
         deleted: () => `Property '${propName}' was removed`,
-        nested: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}\r\n`// os.EOL
+        nested: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}${os.EOL}`
           + `${inner(node.children, propName)}`,
         changed: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}`,
         unchanged: () => `Property '${propName}' wasn't changed`,
@@ -34,7 +34,7 @@ const render = (ast) => {
       };
       return stringOptions[node.state]();
     };
-    return currentAst.map(mapper).join('\r\n'); // \r\n os.EOL
+    return currentAst.map(mapper).join(os.EOL);
   };
   return inner(ast);
 };
