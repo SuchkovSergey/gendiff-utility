@@ -9,12 +9,10 @@ const parsers = {
 };
 
 const parseData = (format, data) => {
-  switch (true) {
-    case _.has(parsers, format):
-      return parsers[format](data);
-    default:
-      throw new Error(`Ooops, parser for "${format}" wasn't found :(`);
+  if (_.has(parsers, format)) {
+    return parsers[format](data);
   }
+  throw new Error(`Ooops, parser for "${format}" wasn't found :(`);
 };
 
 export default parseData;

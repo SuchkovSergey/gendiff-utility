@@ -1,4 +1,3 @@
-import os from 'os';
 import _ from 'lodash';
 import objectStringify from '../utils';
 
@@ -15,15 +14,15 @@ const render = (ast) => {
       const stringOptions = {
         deleted: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}`,
         nested: () => `${indent1}  ${node.name}: ${inner(node.children, depth + 1)}`,
-        changed: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}${os.EOL}`
+        changed: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}\n`
           + `${indent1}+ ${node.name}: ${buildString('valueAfter')}`,
         unchanged: () => `${indent1}  ${node.name}: ${buildString('valueBefore')}`,
         added: () => `${indent1}+ ${node.name}: ${buildString('valueAfter')}`,
       };
       return stringOptions[node.state]();
     };
-    const mapped = currentAst.map(mapper).join(os.EOL);
-    return ['{', os.EOL, mapped, os.EOL, indent2, '}'].join('');
+    const mapped = currentAst.map(mapper).join('\n');
+    return ['{', '\n', mapped, '\n', indent2, '}'].join('');
   };
   return inner(ast, 0);
 };

@@ -10,12 +10,10 @@ const formatters = {
 };
 
 const render = (format, ast) => {
-  switch (true) {
-    case _.has(formatters, format):
-      return formatters[format](ast);
-    default:
-      throw new Error(`Oh, ${format}-format wasn't found :(`);
+  if (_.has(formatters, format)) {
+    return formatters[format](ast);
   }
+  throw new Error(`Oh, ${format}-format wasn't found :(`);
 };
 
 export default render;

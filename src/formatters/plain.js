@@ -1,4 +1,3 @@
-import os from 'os';
 import _ from 'lodash';
 
 const stringTypes = [
@@ -26,7 +25,7 @@ const render = (ast) => {
 
       const stringOptions = {
         deleted: () => `Property '${propName}' was removed`,
-        nested: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}${os.EOL}`
+        nested: () => `Property '${propName}' was updated. From [complex value] to [complex value]\n`
           + `${inner(node.children, propName)}`,
         changed: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}`,
         unchanged: () => `Property '${propName}' wasn't changed`,
@@ -34,7 +33,7 @@ const render = (ast) => {
       };
       return stringOptions[node.state]();
     };
-    return currentAst.map(mapper).join(os.EOL);
+    return currentAst.map(mapper).join('\n');
   };
   return inner(ast);
 };
