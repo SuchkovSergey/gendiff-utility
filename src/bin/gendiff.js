@@ -3,7 +3,7 @@ import program from 'commander';
 import genDiff from '..';
 
 program
-  .version('0.2.8')
+  .version('0.2.9')
   .arguments('<firstConfig> <secondConfig> [format]')
   .action((pathOne, pathTwo, format) => console.log(genDiff(pathOne, pathTwo, format)));
 

@@ -6,7 +6,7 @@ const objectStringify = (object, depth) => {
   const keys = Object.keys(object);
   const mapper = (key) => `${indent1}${key}: ${object[key]}`;
   const currentString = keys.map(mapper).join('\n');
-  return ['{', '\n', currentString, '\n', indent2, '}'].join('');
+  return `{\n${currentString}\n${indent2}}`;
 };
 
 export default objectStringify;

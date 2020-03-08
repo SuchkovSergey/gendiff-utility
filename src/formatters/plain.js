@@ -25,8 +25,7 @@ const render = (ast) => {
 
       const stringOptions = {
         deleted: () => `Property '${propName}' was removed`,
-        nested: () => `Property '${propName}' was updated. From [complex value] to [complex value]\n`
-          + `${inner(node.children, propName)}`,
+        nested: () => inner(node.children, propName),
         changed: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}`,
         unchanged: () => `Property '${propName}' wasn't changed`,
         added: () => `Property '${propName}' was added with value: ${buildString('valueAfter')}`,

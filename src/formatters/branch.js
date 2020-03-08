@@ -8,7 +8,7 @@ const render = (ast) => {
     const mapper = (node) => {
       const buildString = (valueType) => {
         const nodeElement = node[valueType];
-        return nodeElement instanceof Object ? objectStringify(nodeElement, depth) : nodeElement;
+        return _.isObject(nodeElement) ? objectStringify(nodeElement, depth) : nodeElement;
       };
 
       const stringOptions = {
@@ -22,7 +22,7 @@ const render = (ast) => {
       return stringOptions[node.state]();
     };
     const mapped = currentAst.map(mapper).join('\n');
-    return ['{', '\n', mapped, '\n', indent2, '}'].join('');
+    return `{\n${mapped}\n${indent2}}`;
   };
   return inner(ast, 0);
 };

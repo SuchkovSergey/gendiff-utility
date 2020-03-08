@@ -14,10 +14,8 @@ const buildInternalTree = (contentOne, contentTwo) => {
     if (!_.has(contentTwo, key)) {
       return { name, state: 'deleted', valueBefore: contentOne[key] };
     }
-    if (contentOne[key] instanceof Object && contentTwo[key] instanceof Object) {
-      return {
-        name, state: 'nested', children: buildInternalTree(contentOne[key], contentTwo[key]),
-      };
+    if (_.isObject(contentOne[key]) && _.isObject(contentTwo[key])) {
+      return { name, state: 'nested', children: buildInternalTree(contentOne[key], contentTwo[key]) };
     }
     if (contentOne[key] === contentTwo[key]) {
       return {
