@@ -1,8 +1,7 @@
 [![Node CI](https://github.com/SuchkovSergey/gendiff-utility/actions/workflows/nodejs.yml/badge.svg)](https://github.com/SuchkovSergey/gendiff-utility/actions/workflows/nodejs.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4445714ff22e2a22d2e5/maintainability)](https://codeclimate.com/github/SuchkovSergey/gendiff-utility/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/4445714ff22e2a22d2e5/test_coverage)](https://codeclimate.com/github/SuchkovSergey/gendiff-utility/test_coverage)
 
-# gendiff utility
+## Gendiff utility
 
 ### About
 

@@ -11,7 +11,7 @@ build:
 	rm -rf dist
 	npm run build
 fix:
-	sudo npx eslint --fix .
+	npx eslint --fix .
 start:
 	npx babel-node src/bin/gendiff.js
 test:

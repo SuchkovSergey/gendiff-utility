@@ -37,16 +37,12 @@
     "jest-cli": "^25.1.0"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Sergey89274291549/frontend-project-lvl2.git"
+    "type": "git"
   },
   "author": "Sergey Suchkov",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Sergey89274291549/frontend-project-lvl2/issues"
-  },
   "jest": {
     "testEnvironment": "node"
   },
-  "homepage": "https://github.com/Sergey89274291549/frontend-project-lvl2#readme"
+  "homepage": "https://github.com/SuchkovSergey"
 }
