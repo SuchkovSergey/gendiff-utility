@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import objectStringify from '../utils';
+import { STATE_TYPES } from '../constants';
 
 const render = (ast) => {
     const inner = (currentAst, depth) => {
@@ -12,12 +13,12 @@ const render = (ast) => {
             };
 
             const stringOptions = {
-                deleted: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}`,
-                nested: () => `${indent1}  ${node.name}: ${inner(node.children, depth + 1)}`,
-                changed: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}\n`
+                [STATE_TYPES.DELETED]: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}`,
+                [STATE_TYPES.NESTED]: () => `${indent1}  ${node.name}: ${inner(node.children, depth + 1)}`,
+                [STATE_TYPES.CHANGED]: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}\n`
                     + `${indent1}+ ${node.name}: ${buildString('valueAfter')}`,
-                unchanged: () => `${indent1}  ${node.name}: ${buildString('valueBefore')}`,
-                added: () => `${indent1}+ ${node.name}: ${buildString('valueAfter')}`,
+                [STATE_TYPES.UNCHANGED]: () => `${indent1}  ${node.name}: ${buildString('valueBefore')}`,
+                [STATE_TYPES.ADDED]: () => `${indent1}+ ${node.name}: ${buildString('valueAfter')}`,
             };
             return stringOptions[node.state]();
         };

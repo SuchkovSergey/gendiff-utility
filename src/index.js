@@ -3,32 +3,41 @@ import _ from 'lodash';
 import path from 'path';
 import parseData from './parsers';
 import render from './formatters';
+import { STATE_TYPES } from './constants';
 
 const buildInternalTree = (contentOne, contentTwo) => {
     const uniqKeys = _.union(_.keys(contentOne), _.keys(contentTwo));
     const customMap = (key) => {
-        const name = key;
+        let levelData;
         if (!_.has(contentOne, key)) {
-            return { name, state: 'added', valueAfter: contentTwo[key] };
-        }
-        if (!_.has(contentTwo, key)) {
-            return { name, state: 'deleted', valueBefore: contentOne[key] };
-        }
-        if (_.isObject(contentOne[key]) && _.isObject(contentTwo[key])) {
-            return {
-                name,
-                state: 'nested',
+            levelData = {
+                state: STATE_TYPES.ADDED,
+                valueAfter: contentTwo[key],
+            };
+        } else if (!_.has(contentTwo, key)) {
+            levelData = {
+                state: STATE_TYPES.DELETED,
+                valueBefore: contentOne[key],
+            };
+        } else if (_.isObject(contentOne[key]) && _.isObject(contentTwo[key])) {
+            levelData = {
+                state: STATE_TYPES.NESTED,
                 children: buildInternalTree(contentOne[key], contentTwo[key]),
             };
-        }
-        if (contentOne[key] === contentTwo[key]) {
-            return {
-                name, state: 'unchanged', valueBefore: contentOne[key], valueAfter: contentTwo[key],
+        } else if (contentOne[key] === contentTwo[key]) {
+            levelData = {
+                state: STATE_TYPES.UNCHANGED,
+                valueBefore: contentOne[key],
+                valueAfter: contentTwo[key],
+            };
+        } else {
+            levelData = {
+                state: STATE_TYPES.CHANGED,
+                valueBefore: contentOne[key],
+                valueAfter: contentTwo[key],
             };
         }
-        return {
-            name, state: 'changed', valueBefore: contentOne[key], valueAfter: contentTwo[key],
-        };
+        return { ...levelData, name: key };
     };
     return uniqKeys.map(customMap);
 };
