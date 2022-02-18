@@ -1,4 +1,5 @@
-[![Node CI](https://github.com/SuchkovSergey/gendiff-utility/actions/workflows/nodejs.yml/badge.svg)](https://github.com/SuchkovSergey/gendiff-utility/actions/workflows/nodejs.yml)
+[![Build CI](https://github.com/SuchkovSergey/gendiff-utility/actions/workflows/nodejs.yml/badge.svg)](https://github.com/SuchkovSergey/gendiff-utility/actions/workflows/nodejs.yml)
+[![Tests CI](https://github.com/SuchkovSergey/gendiff-utility/actions/workflows/nodejstests.yml/badge.svg)](https://github.com/SuchkovSergey/gendiff-utility/actions/workflows/nodejstests.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4445714ff22e2a22d2e5/maintainability)](https://codeclimate.com/github/SuchkovSergey/gendiff-utility/maintainability)
 
 ## Gendiff utility
