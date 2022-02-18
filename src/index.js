@@ -37,7 +37,7 @@ const buildInternalTree = (contentOne, contentTwo) => {
                 valueAfter: contentTwo[key],
             };
         }
-        return { ...levelData, name: key };
+        return { name: key, ...levelData };
     };
     return uniqKeys.map(customMap);
 };
