@@ -1,12 +1,13 @@
 import _ from 'lodash';
 
-const objectStringify = (object, depth) => {
-    const indent1 = _.repeat(' ', depth * 4 + 8);
-    const indent2 = _.repeat(' ', depth * 4 + 4);
-    const keys = Object.keys(object);
-    const mapper = (key) => `${indent1}${key}: ${object[key]}`;
-    const currentString = keys.map(mapper).join('\n');
-    return `{\n${currentString}\n${indent2}}`;
+const stringifyObject = (object, depth) => {
+    const startIndent = _.repeat(' ', depth * 4 + 8);
+    const finishIndent = _.repeat(' ', depth * 4 + 4);
+    const currentString = Object
+        .entries(object)
+        .map(([key, value]) => `${startIndent}${key}: ${value}`)
+        .join('\n');
+    return `{\n${currentString}\n${finishIndent}}`;
 };
 
-export default objectStringify;
+export default stringifyObject;

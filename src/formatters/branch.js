@@ -1,31 +1,31 @@
 import _ from 'lodash';
-import objectStringify from '../utils';
+import stringifyObject from '../utils';
 import { STATE_TYPES } from '../constants';
 
-const render = (ast) => {
-    const inner = (currentAst, depth) => {
-        const indent1 = _.repeat(' ', depth * 4 + 2);
-        const indent2 = _.repeat(' ', depth * 4);
+const render = (abstractTree) => {
+    const composeInnerData = (currentTree, depth) => {
+        const startIndent = _.repeat(' ', depth * 4 + 2);
+        const finishIndent = _.repeat(' ', depth * 4);
         const mapper = (node) => {
             const buildString = (valueType) => {
                 const nodeElement = node[valueType];
-                return _.isObject(nodeElement) ? objectStringify(nodeElement, depth) : nodeElement;
+                return _.isObject(nodeElement) ? stringifyObject(nodeElement, depth) : nodeElement;
             };
 
             const stringOptions = {
-                [STATE_TYPES.DELETED]: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}`,
-                [STATE_TYPES.NESTED]: () => `${indent1}  ${node.name}: ${inner(node.children, depth + 1)}`,
-                [STATE_TYPES.CHANGED]: () => `${indent1}- ${node.name}: ${buildString('valueBefore')}\n`
-                    + `${indent1}+ ${node.name}: ${buildString('valueAfter')}`,
-                [STATE_TYPES.UNCHANGED]: () => `${indent1}  ${node.name}: ${buildString('valueBefore')}`,
-                [STATE_TYPES.ADDED]: () => `${indent1}+ ${node.name}: ${buildString('valueAfter')}`,
+                [STATE_TYPES.DELETED]: () => `${startIndent}- ${node.name}: ${buildString('valueBefore')}`,
+                [STATE_TYPES.NESTED]: () => `${startIndent}  ${node.name}: ${composeInnerData(node.children, depth + 1)}`,
+                [STATE_TYPES.CHANGED]: () => `${startIndent}- ${node.name}: ${buildString('valueBefore')}\n`
+                    + `${startIndent}+ ${node.name}: ${buildString('valueAfter')}`,
+                [STATE_TYPES.UNCHANGED]: () => `${startIndent}  ${node.name}: ${buildString('valueBefore')}`,
+                [STATE_TYPES.ADDED]: () => `${startIndent}+ ${node.name}: ${buildString('valueAfter')}`,
             };
             return stringOptions[node.state]();
         };
-        const mapped = currentAst.map(mapper).join('\n');
-        return `{\n${mapped}\n${indent2}}`;
+        const mappedTree = currentTree.map(mapper).join('\n');
+        return `{\n${mappedTree}\n${finishIndent}}`;
     };
-    return inner(ast, 0);
+    return composeInnerData(abstractTree, 0);
 };
 
 export default render;

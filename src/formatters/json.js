@@ -1,3 +1,3 @@
-const render = (ast) => JSON.stringify(ast, null, '');
+const render = (abstractTree) => JSON.stringify(abstractTree, null, '');
 
 export default render;

@@ -5,7 +5,7 @@ import parseData from './parsers';
 import render from './formatters';
 import { STATE_TYPES } from './constants';
 
-const buildInternalTree = (contentOne, contentTwo) => {
+const buildAbstractTree = (contentOne, contentTwo) => {
     const uniqKeys = _.union(_.keys(contentOne), _.keys(contentTwo));
     const customMap = (key) => {
         let levelData;
@@ -22,7 +22,7 @@ const buildInternalTree = (contentOne, contentTwo) => {
         } else if (_.isObject(contentOne[key]) && _.isObject(contentTwo[key])) {
             levelData = {
                 state: STATE_TYPES.NESTED,
-                children: buildInternalTree(contentOne[key], contentTwo[key]),
+                children: buildAbstractTree(contentOne[key], contentTwo[key]),
             };
         } else if (contentOne[key] === contentTwo[key]) {
             levelData = {
@@ -44,15 +44,15 @@ const buildInternalTree = (contentOne, contentTwo) => {
 
 const parseContent = (currentPath) => {
     const format = path.extname(currentPath).slice(1);
-    const data = fs.readFileSync(currentPath, 'utf-8');
-    return parseData(format, data);
+    const fileContent = fs.readFileSync(currentPath, 'utf-8');
+    return parseData(format, fileContent);
 };
 
 const genDiff = (pathOne, pathTwo, formatName = 'branch') => {
     const contentOne = parseContent(pathOne);
     const contentTwo = parseContent(pathTwo);
-    const ast = buildInternalTree(contentOne, contentTwo);
-    return render(formatName, ast);
+    const abstractTree = buildAbstractTree(contentOne, contentTwo);
+    return render(formatName, abstractTree);
 };
 
 export default genDiff;

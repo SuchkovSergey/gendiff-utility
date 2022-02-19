@@ -16,8 +16,8 @@ const stringTypes = [
     },
 ];
 
-const render = (ast) => {
-    const inner = (currentAst, currentPropName = '') => {
+const render = (abstractTree) => {
+    const composeInnerData = (currentAst, currentPropName = '') => {
         const mapper = (node) => {
             const propName = _.trim(`${currentPropName}.${node.name}`, '.');
             const buildString = (valueType) => stringTypes
@@ -26,8 +26,9 @@ const render = (ast) => {
 
             const stringOptions = {
                 [STATE_TYPES.DELETED]: () => `Property '${propName}' was removed`,
-                [STATE_TYPES.NESTED]: () => inner(node.children, propName),
-                [STATE_TYPES.CHANGED]: () => `Property '${propName}' was updated. From ${buildString('valueBefore')} to ${buildString('valueAfter')}`,
+                [STATE_TYPES.NESTED]: () => composeInnerData(node.children, propName),
+                [STATE_TYPES.CHANGED]: () => `Property '${propName}' was updated. From `
+                    + `${buildString('valueBefore')} to ${buildString('valueAfter')}`,
                 [STATE_TYPES.UNCHANGED]: () => `Property '${propName}' wasn't changed`,
                 [STATE_TYPES.ADDED]: () => `Property '${propName}' was added with value: ${buildString('valueAfter')}`,
             };
@@ -35,7 +36,7 @@ const render = (ast) => {
         };
         return currentAst.map(mapper).join('\n');
     };
-    return inner(ast);
+    return composeInnerData(abstractTree);
 };
 
 export default render;
